@@ -15,7 +15,11 @@ exports.default = function (inApiPath) {
     var urlData = _url2.default.parse(ctx.url);
     var api = (urlData.pathname.split('/') || []).pop();
     var data = ctx.request.body;
-    ctx.body = api && require(inApiPath + '/' + api).default(ctx, data);
+    try {
+      ctx.body = require(inApiPath + '/' + api).default(ctx, data);
+    } catch (_) {
+      ctx.body = '[NODE ERROR]: API ERROR~';
+    }
     next();
   };
 };
